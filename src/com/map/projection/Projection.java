@@ -188,5 +188,9 @@ public class Projection {
     public static boolean isInit() {
         return isInit;
     }
+    
+    public static double[] getOffset(double lat, double lng){
+        return request(lat,lng);
+    }
 
 }
