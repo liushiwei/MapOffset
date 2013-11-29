@@ -138,15 +138,20 @@ public class Projection {
     }
 
     public static void init() {
-        fileName = Environment.getExternalStorageDirectory().getPath() + "/Mfile.dat";
+    	File path = Environment.getExternalStoragePublicDirectory(
+    			Environment.DIRECTORY_DOWNLOADS);
+        fileName = path.getPath() + "/Mfile.dat";
+    	//fileName ="Mfile.dat";
         Log.d(TAG, "File name: " + fileName);
         File file = new File(fileName);
         //file.delete();
         if (!file.exists()) {
+        	path.mkdirs();
             InputStream input = Projection.class.getResourceAsStream("db/projection");
             byte[] buffer = new byte[300];
             try {
-                FileOutputStream fileStream = new FileOutputStream(new File(fileName));
+            	file.createNewFile();
+                FileOutputStream fileStream = new FileOutputStream(file);
                 int j = 0;
                 //int t = j;
                
@@ -158,13 +163,15 @@ public class Projection {
                 input.close();
                 //Log.d(TAG, "Created file name: " + fileName + " file size = " + t);
             } catch (FileNotFoundException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
                 file.delete();
+                isInit = false;
+                return;
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 file.delete();
+                isInit = false;
+                return;
             }
         }
 
